@@ -9,9 +9,20 @@ const appendToDiv = data => {
 }
 
 const getData = () => {
-    const url = 'http://numbersapi.com/2,4,6,8,10/trivia?json'
-    axios.get(url)
-    .then(data => appendToDiv(data.data))
-}
+    return new Promise((resolve, reject) => {
+        const url = 'http://numbersapi.com/2,4,6,8,10/trivia?json';
+        let result = axios.get(url);
+        if (result) {
+            resolve(result);
+        } else {
+            reject();
+        };
+    });
+};
 
-document.addEventListener('DOMContentLoaded', getData)
+const placeInDom = () => {
+    getData()
+    .then(data => appendToDiv(data.data));
+};
+
+document.addEventListener('DOMContentLoaded', placeInDom);
