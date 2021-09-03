@@ -1,5 +1,9 @@
 let cardArray = [];
 
+
+// Create a string of the card's suit and value and
+// push it to the cardArray. Return a new call to the 
+// cards API.
 const formatData = data => {
     const deckId = data.deck_id;
     let card = data.cards[0];
@@ -8,6 +12,8 @@ const formatData = data => {
     return axios.get(`http://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
 }
 
+
+// Initial call to get data
 const getData = () => {
     return new Promise((resolve, reject) => {
         const url = 'http://deckofcardsapi.com/api/deck/new/draw/?count=1';
@@ -20,6 +26,9 @@ const getData = () => {
     });
 };
 
+
+// A wrapper for the above functions, and then, finally printing out
+// the contents of the cardArray, as asked to do in the assignment.
 const makePromises = () => {
     getData()
     .then(data => formatData(data.data))
