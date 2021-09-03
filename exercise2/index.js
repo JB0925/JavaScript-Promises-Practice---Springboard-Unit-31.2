@@ -1,3 +1,4 @@
+const url = 'http://numbersapi.com/10/trivia?json';
 let infoArray = [];
 
 const pushToArray = (data,url) => {
@@ -15,14 +16,24 @@ const putInfoInDom = () => {
 }
 
 const getData = () => {
-    const url = 'http://numbersapi.com/10/trivia?json';
-    axios.get(url)
+    return new Promise((resolve, reject) => {
+        let result = axios.get(url);
+        if (result) {
+            resolve(result);
+        } else {
+            reject();
+        };
+    });
+};
+
+const wrapper = () => {
+    getData()
     .then(data => pushToArray(data.data, url))
     .then(data => pushToArray(data.data, url))
     .then(data => pushToArray(data.data, url))
     .then(data => pushToArray(data.data, url))
     .then(() => putInfoInDom())
     .catch(e => console.log(e));
-};
+}
 
-document.addEventListener('DOMContentLoaded', getData);
+document.addEventListener('DOMContentLoaded', wrapper);
