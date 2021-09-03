@@ -3,19 +3,30 @@ let cardArray = [];
 const formatData = data => {
     const deckId = data.deck_id;
     let card = data.cards[0];
-    const str = `${card.value} of ${card.suit}`
-    cardArray.push(str);
-    return axios.get(`http://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+    const cardString = `${card.value} of ${card.suit}`;
+    cardArray.push(cardString);
+    return axios.get(`http://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
 }
 
 const getData = () => {
-    const url = 'http://deckofcardsapi.com/api/deck/new/draw/?count=1'
-    axios.get(url)
+    return new Promise((resolve, reject) => {
+        const url = 'http://deckofcardsapi.com/api/deck/new/draw/?count=1';
+        let res = axios.get(url);
+        if (res) {
+            resolve(res);
+        } else {
+            reject()
+        };
+    });
+};
+
+const makePromises = () => {
+    getData()
     .then(data => formatData(data.data))
     .then(data => formatData(data.data))
     .then(() => cardArray.forEach(c => console.log(c)))
-    .catch(e => console.log(e))
+    .catch(e => console.log(e));
 };
 
 
-document.addEventListener('DOMContentLoaded', getData);
+document.addEventListener('DOMContentLoaded', makePromises);
